@@ -30,8 +30,5 @@ while score < 50 and answer_state is not None:
         question_title = f"{score}/50 States Correct"
 
 if score != 50:
-    missed_states = []
-    for state in all_states:
-        if state not in guessed_states:
-            missed_states.append(state)
+    missed_states = [state for state in all_states if state not in guessed_states]
     pandas.DataFrame(missed_states).to_csv("./states_to_learn.csv", index=False, header=False)
