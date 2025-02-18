@@ -20,12 +20,12 @@ score = 0
 
 answer_state = ""
 while score < 50 and answer_state is not None:
-    answer_state = screen.textinput(question_title, "What's another states name?")
+    answer_state = screen.textinput(question_title, "What's another states name?").title()
     if answer_state is not None and answer_state.title() in all_states:
         state = data[data.state == answer_state.title()]
-        tort.goto(state.x.iloc[0], state.y.iloc[0])
-        tort.write(state.state.iloc[0])
-        guessed_states.append(state.state.iloc[0])
+        tort.goto(state.x.item(), state.y.item())
+        tort.write(state.state.item())
+        guessed_states.append(state.state.item())
         score += 1
         question_title = f"{score}/50 States Correct"
 
