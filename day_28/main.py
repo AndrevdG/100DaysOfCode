@@ -18,7 +18,7 @@ repetitions = 0
 
 
 def reset_timer():
-    global repetitions, text_checkmark
+    global repetitions
     repetitions = 0
     label_checkmark.config(text="")
     window.after_cancel(counter_id)
@@ -28,7 +28,7 @@ def reset_timer():
 
 
 def start_timer():
-    global repetitions, text_checkmark
+    global repetitions
     repetitions += 1
 
     if repetitions % 2 != 0:
