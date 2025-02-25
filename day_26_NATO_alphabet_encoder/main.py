@@ -9,12 +9,17 @@ nato_abc = {row.letter: row.code for (i, row) in nato_abc_df.iterrows()}
 # from a word that the user inputs
 
 # try: from day_30
-while True:
+
+
+def generate_phonetic():
     word_to_spell = input("Which word would you like to be spelled phonetically? : ")
     try:
         word_phonetic = [nato_abc[letter.upper()] for letter in word_to_spell]
     except KeyError:
         print("Sorry, only letters in the alphabet please!")
+        generate_phonetic()
     else:
         print(word_phonetic)
-        break
+
+
+generate_phonetic()
