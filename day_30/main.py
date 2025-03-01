@@ -111,7 +111,7 @@ password_field = tk.Entry(width=21)
 password_field.grid(column=1, row=3, sticky='w')
 
 # form buttons
-button_search = tk.Button(text="Search", justify='left',width=13, command=get_password)
+button_search = tk.Button(text="Search", justify='left', width=13, command=get_password)
 button_search.grid(column=2, row=1)
 button_new_password = tk.Button(text="Generate Password", justify='left', command=generate_password)
 button_new_password.grid(column=2, row=3)
