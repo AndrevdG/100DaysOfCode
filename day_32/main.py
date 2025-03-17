@@ -1,33 +1,44 @@
-import datetime as dt
+# 1. Update the birthdays.csv
+# 2. Check if today matches a birthday in the birthdays.csv
+# 3. If step 2 is true, pick a random letter from letter templates and replace the [NAME] with the person's actual
+#    name from birthdays.csv
+# 4. Send the letter generated in step 3 to that person's email address.
+import pandas
+import os
 import smtplib
 from dotenv import load_dotenv
-import os
 from random import choice
+from datetime import datetime
+
+TEMPLATEDIR = './letter_templates'
+BIRTHDAY_DB = './birthdays.csv'
 
 
-def sendmail(message, subject="Happy Monday!"):
+def sendmail(email, message, subject="Happy Birtday!"):
     with smtplib.SMTP(host="smtp.gmail.com", port="587") as connection:
         connection.starttls()
-        connection.login(user=email, password=password)
+        connection.login(user=username, password=password)
         connection.sendmail(
-            from_addr=email,
-            to_addrs=to_email,
+            from_addr=username,
+            to_addrs=email,
             msg=f"Subject:{subject}\n\n{message}"
         )
 
 
-def get_qoute():
-    with open("./quotes.txt") as file:
-        data = file.readlines()
-        return choice(data)
-
-
 load_dotenv()
-email = os.getenv("EMAIL")
+username = os.getenv("USERNAME")
 password = os.getenv("PASSWORD")
-to_email = os.getenv("TOEMAIL")
 
-if dt.datetime.now().weekday() == 0:
-    sendmail(message=get_qoute())
+today = datetime.now()
+data = pandas.read_csv(BIRTHDAY_DB)
+active_birthdays = data[(data['month'] == today.month) & (data['day'] == today.day)].to_dict("records")
+templates = os.listdir(TEMPLATEDIR)
+
+if not active_birthdays == []:
+    for bd in active_birthdays:
+        with open(f"./letter_templates/{choice(templates)}") as file:
+            message = file.read()
+            message = message.replace("[NAME]", bd['name'])
+        sendmail(email=bd['email'], message=message)
 else:
-    print(f'Not Monday({dt.datetime.now().weekday()})')
+    print("No birthdays today!")
